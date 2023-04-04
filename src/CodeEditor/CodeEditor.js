@@ -148,8 +148,16 @@ else{
         var msg = messageObject.message;
       } else {
         role = "user";
-        var msg =
+        if (selectedLanguage.category=="Regex") {
+          console.log("Regex Selected...........");
+          var msg =
+          messageObject.message + `${selectedLanguage.value} Regular Expression`;
+        }
+        else{
+          var msg =
           messageObject.message + ` in ${selectedLanguage.value} Language`;
+        }
+        
       }
       return { role: role, content: msg };
     });

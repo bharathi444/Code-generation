@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import ReactTypingEffect from "react-typing-effect";
 import TypeWriterEffect from "react-typewriter-effect";
 // import './App.css'
@@ -22,7 +22,75 @@ const systemMessage = {
 
 function ChatPackageExplain() {
  
+  const [userResponse, setuserResponse] = useState("");
+  const [gptResponse, setgptResponse] = useState("");
+  useEffect(()=>{
+    const data = localStorage.getItem('HistoryData');
+    if(data){
+       JSON.parse(data)
+    }
+    else{
+       localStorage.setItem('HistoryData', JSON.stringify([]));
+    }
+  },[])
 
+  useEffect(()=>{
+
+    console.log("printing GPT response--------->>>",gptResponse)
+    const lastHistory =JSON.parse( localStorage.getItem('HistoryData'));
+    if(lastHistory){
+      if (userResponse!="") {
+    const updatedData = [ ...lastHistory,
+      {
+        type: "text",
+        message: gptResponse,
+        sender: "ChatGPT",
+        direction: "incoming",
+        position: "last",
+        category:"ExplainCode",
+        categoryType : "ExplainCode"
+      },]
+    localStorage.setItem('HistoryData', JSON.stringify(updatedData));}
+    }
+    else{
+      if(gptResponse!=""){
+      const updatedData =[{
+        type: "text",
+        message: gptResponse,
+        sender: "ChatGPT",
+        direction: "incoming",
+        position: "last",
+        category:"ExplainCode",
+        categoryType : "ExplainCode"
+      },]
+      localStorage.setItem('HistoryData', JSON.stringify(updatedData));}
+    }
+      },[gptResponse])
+
+      useEffect(()=>{
+        const lastHistory =JSON.parse( localStorage.getItem('HistoryData'));
+        console.log("printing History after GPT response--------->>>",lastHistory)
+        console.log("printing User response--------->>>",userResponse)
+        
+        if(lastHistory){
+          if (userResponse!="") {
+            
+          
+        const updatedData = [ ...lastHistory,
+          {
+            type: "text",
+            message: userResponse,
+            sender: "user",
+            direction: "outgoing",
+            position: "last",
+            category:"ExplainCode",
+            categoryType : "ExplainCode"
+          },]
+        localStorage.setItem('HistoryData', JSON.stringify(updatedData));}
+        }
+          },[userResponse])
+    
+    
   const [messages, setMessages] = useState([
     {
       type: "text",
@@ -44,7 +112,7 @@ function ChatPackageExplain() {
     };
 
     const newMessages = [...messages, newMessage];
-
+    setuserResponse(message);
     setMessages(newMessages);
 
     // Initial system message to determine ChatGPT functionality
@@ -102,6 +170,7 @@ function ChatPackageExplain() {
     
       var response =await res.json()
       console.log("success>>>>>>>>>>>>>",response.choices[0].message.content)
+      setgptResponse(response.choices[0].message.content);
       setMessages([
               ...chatMessages,
               {
@@ -168,7 +237,7 @@ function ChatPackageExplain() {
                             <TypeWriterEffect
                               cursorColor="transparent"
                               text={message.message}
-                              typeSpeed={100}
+                              typeSpeed={50}
                               textStyle={{
                                 color: "#3F3D56",
                                 fontSize: "1rem",

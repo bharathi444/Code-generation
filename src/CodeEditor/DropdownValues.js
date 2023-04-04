@@ -41,10 +41,10 @@ export const ProgrammingLanguagesList = [
 
   { value: "Frontend", label: "Frontend", category: "History" },
   { value: "Backend", label: "Backend", category: "History" },
-  { value: "App Development", label: "App Development", category: "History" },
-  { value: "Database", label: "Database", category: "History" },
-  { value: "Regular Expression", label: "Regular Expression", category: "History" },
-  { value: "Explain Code", label: "Explain Code", category: "History" },
+  { value: "AppDev", label: "App Development", category: "History" },
+  { value: "DataBase", label: "Database", category: "History" },
+  { value: "Regex", label: "Regular Expression", category: "History" },
+  { value: "ExplainCode", label: "Explain Code", category: "History" },
 
   
 
